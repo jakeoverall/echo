@@ -1,5 +1,6 @@
 let FooCache = require('memory-cache'),
-  router = require('express').Router()
+  router = require('express').Router(),
+ 	baseUrl = `http://localhost:5000/api/echo/`
 
 let EchoController = () => {
   return {
@@ -9,12 +10,11 @@ let EchoController = () => {
     },
     post: (key, data) => {
       FooCache.put(key, data, 30000)
-      return key
+      return baseUrl + key
     }
   }
 }
 let echo = EchoController();
-let baseUrl = `http://localhost:5000/api/echo/`
 
 router.route('/:id?')
   .get((req, res) => {
@@ -27,4 +27,4 @@ router.route('/:id?')
     return res.send(baseUrl + req.body.key)
   })
 
-module.exports = router;
+module.exports = {router, echo};

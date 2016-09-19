@@ -4,7 +4,7 @@ let port = process.env.PORT || 5000,
   cors = require('cors'),
   server = express(),
   EchoController = require('./EchoController');
-  // io = require('socket.io')(port),
+  io = require('socket.io')(port+1),
 
 server.use(bodyParser.json())
 server.use(bodyParser.urlencoded({extended: true}))
@@ -17,19 +17,16 @@ var corsOptions = {
   }
 }
 
-server.use('/api/echo', cors(corsOptions), EchoController)
+server.use('/api/echo', cors(corsOptions), EchoController.router)
 
 server.listen(port, () => {
   console.log('listenting on port: ', port)
 })
 
-// io.on('connection', s => {
-//   s.on('post', (data) => {
-//     EchoController.post(data.key, data.code)
-//     s.emit('key', data.key)
-//   })
-//   s.on('get', (data) => {
-//     let code = EchoController.get(data.key)
-//     s.emit('FOO', code)
-//   })
-// })
+io.on('connection', s => {
+  s.on('post', (data) => {
+    let url = EchoController.echo.post(data.key, data.code)
+    s.emit('key', url)
+  })
+	
+})

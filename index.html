@@ -14,16 +14,16 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script>
-		let base = `http://localhost:5000/api/echo`
-		$.post(base, {key: 1, code: '<h1>Hello Mateo</h1>'}, (url)=>{
-			update(url);
-		})
+		// let base = `http://localhost:5000/api/echo`
+		// $.post(base, {key: 1, code: '<h1>Hello Mateo</h1>'}, (url)=>{
+		// 	update(url);
+		// })
 
-		setTimeout(()=>{
-			$.post(base, {key: 1, code: '<h1>This updated</h1>'}, (url)=>{
-				update(url);
-			})
-		}, 3000)
+		// setTimeout(()=>{
+		// 	$.post(base, {key: 1, code: '<h1>This updated</h1>'}, (url)=>{
+		// 		update(url);
+		// 	})
+		// }, 3000)
 		
 		let update = (url)=>{
 			$('#foo').empty();
@@ -31,25 +31,22 @@
 		}
 	</script>
 
-	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.js"></script>-->
-	<!--<script>
-		let socket = io('http://localhost:3000');
-		socket.on('FOO', (code)=>{
-			var foo = $("#foo");			
-			foo.empty()
-			foo.append(code);
-		})
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.js"></script>
+	<script>
+		let socket = io('http://localhost:5001');
+
 		socket.emit('post', {key: 1, code: '<h1>Hello Mateo This should update in a few seconds</h1>'});
 		
-		socket.on('key', (key)=>{
-			socket.emit('get', {key: key});
+		socket.on('key', (url)=>{
+			console.log('recieving')
+			update(url)
 		})
 
 		setTimeout(()=>{
 				console.log('posting...');
 				socket.emit('post', {key: 1, code: '<h1>And now we have updated</h1>'});
 		},5000)
-	</script>-->
+	</script>
 
 </body>
 
